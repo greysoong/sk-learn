@@ -10,5 +10,7 @@ import matplotlib.pyplot as plt
 
 
 #mglearn.plots.plot_knn_classification(n_neighbors=3)
-mglearn.plots.plot_knn_regression(n_neighbors=3)
+#mglearn.plots.plot_knn_regression(n_neighbors=3)
+#mglearn.plots.plot_linear_regression_wave()
+mglearn.plots.plot_ridge_n_samples()
 plt.show()
