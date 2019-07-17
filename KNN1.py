@@ -16,6 +16,10 @@ import graphviz
 #mglearn.plots.plot_linear_svc_regularization()
 #mglearn.plots.plot_animal_tree()
 #plt.show()
+'''
 with open("tree.dot") as f:
     dot_graph = f.read()
 graphviz.Source(dot_graph)
+'''
+
+
