@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier,export_graphviz
 import graphviz
 from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier
-
+from sklearn.svm  import SVC
 
 cancer = load_breast_cancer()
 X_train,X_test,y_train,y_test = train_test_split(cancer.data,cancer.target,stratify=cancer.target,random_state=0)
@@ -25,11 +25,28 @@ forest.fit(X_train,y_train)
 gbrt =GradientBoostingClassifier(random_state=0,max_depth=1)
 gbrt.fit(X_train,y_train)
 
+min_on_training = X_train.min(axis=0)
+range_on_training = (X_train - min_on_training).max(axis=0)
+X_train_scaled = (X_train - min_on_training)/range_on_training
+print("Minimun for each feature\n{}".format(X_train_scaled.min(axis=0)))
+print("Maximum for each feature\n{}".format(X_train_scaled.max(axis=0)))
+X_test_scaled = (X_test - min_on_training)/range_on_training
+svc = SVC(C=1000)
+svc.fit(X_train_scaled,y_train)
 
 print("Accuracy on training set:{:.3f}".format(forest.score(X_train,y_train)))
 print("Accuracy on test set:{:.3f}".format(forest.score(X_test,y_test)))
 print("Accuracy on training set:{:.3f}".format(gbrt.score(X_train,y_train)))
 print("Accuracy on test set:{:.3f}".format(gbrt.score(X_test,y_test)))
+print("Accuracy on training set:{:.3f}".format(svc.score(X_train_scaled,y_train)))
+print("Accuracy on test set:{:.3f}".format(svc.score(X_test_scaled,y_test)))
+
+plt.plot(X_train.min(axis=0),'o',label="min")
+plt.plot(X_train.max(axis=0),'^',label="max")
+plt.legend(loc=4)
+plt.xlabel("Feature index")
+plt.ylabel("Feature magnitude")
+plt.yscale("log")
 
 def plot_feature_importances_cancer(model):
     n_features = cancer.data.shape[1]
@@ -37,7 +54,7 @@ def plot_feature_importances_cancer(model):
     plt.yticks(np.arange(n_features),cancer.feature_names)
     plt.xlabel("Feature importance")
     plt.ylabel("Feature")
-plot_feature_importances_cancer(gbrt)
+#plot_feature_importances_cancer(gbrt)
 plt.show()
 
 

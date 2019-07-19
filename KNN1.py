@@ -9,6 +9,8 @@ import mglearn
 import matplotlib.pyplot as plt
 import graphviz
 
+
+
 #mglearn.plots.plot_knn_classification(n_neighbors=3)
 #mglearn.plots.plot_knn_regression(n_neighbors=3)
 #mglearn.plots.plot_linear_regression_wave()
