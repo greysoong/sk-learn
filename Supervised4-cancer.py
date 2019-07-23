@@ -16,9 +16,11 @@ import graphviz
 from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier
 from sklearn.svm  import SVC
 from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import MinMaxScaler,StandardScaler
 
 cancer = load_breast_cancer()
 X_train,X_test,y_train,y_test = train_test_split(cancer.data,cancer.target,stratify=cancer.target,random_state=0)
+'''
 mean_on_train = X_train.mean(axis=0)
 std_on_train = X_train.std(axis=0)
 
@@ -42,9 +44,29 @@ X_train_scaled = (X_train - min_on_training)/range_on_training
 #print("Maximum for each feature\n{}".format(X_train_scaled.max(axis=0)))
 print("Cancer data per-feature maxima:\n{}".format(cancer.data.max(axis=0)))
 '''
+'''
 X_test_scaled = (X_test - min_on_training)/range_on_training
 svc = SVC(C=1000)
 svc.fit(X_train_scaled,y_train)
+'''
+svm = SVC(C=100)
+svm.fit(X_train,y_train)
+print("Test set accuracy:{:.2f}".format(svm.score(X_test,y_test)))
+
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+svm.fit(X_train_scaled,y_train)
+print("Scaled test set accuracy:{:.2f}".format(svm.score(X_test_scaled,y_test)))
+scaler_std = StandardScaler()
+scaler_std.fit(X_train)
+X_train_scaled_std = scaler_std.transform(X_train)
+X_test_scaled_std = scaler_std.transform(X_test)
+svm.fit(X_train_scaled_std,y_train)
+print("SVM test accuracy:{:.2f}".format(svm.score(X_test_scaled_std,y_test)))
+
+
 '''
 #print("Accuracy on training set:{:.3f}".format(forest.score(X_train,y_train)))
 #print("Accuracy on test set:{:.3f}".format(forest.score(X_test,y_test)))
@@ -62,7 +84,7 @@ plt.xlabel("Columns in weight matrix")
 plt.ylabel("Input feature")
 plt.colorbar()
 plt.show()
-
+'''
 
 '''
 plt.plot(X_train.min(axis=0),'o',label="min")
