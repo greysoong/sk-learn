@@ -13,16 +13,16 @@ import numpy as np
 from  sklearn.datasets import make_moons
 
 X,y = make_moons(n_samples=200,noise=0.05,random_state=0)
-kmeans = KMeans(n_clusters=2)
+kmeans = KMeans(n_clusters=10,random_state=0)
 kmeans.fit(X)
 y_pred = kmeans.predict(X)
 
-plt.scatter(X[:,0],X[:,1],c=y_pred,cmap=mglearn.cm2,s=60)
-plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1],marker="^",c=[mglearn.cm2(0),mglearn.cm2(1)],s=100,linewidths=2)
+plt.scatter(X[:,0],X[:,1],c=y_pred,cmap='Paired',s=60)
+plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1],marker="^",c=range(kmeans.n_clusters),s=60,linewidths=2,cmap='Paired')
 plt.xlabel("Feature 0")
 plt.ylabel("Feature 1")
 plt.show()
-
+print("Cluster memberships:\n{}".format(y_pred))
 '''
 X,y = make_blobs(random_state=170,n_samples=600)
 rng = np.random.RandomState(74)
